@@ -72,8 +72,13 @@ MovesAPI.prototype = {
 
 var tokens = readTokens(argv.tokens);
 var mvapi = new MovesAPI(tokens.access_token, tokens.refresh_token);
+var output;
+
 mvapi.getProfile().then(function(body) { 
 	console.log('got profile ', body);
+	var profile = JSON.parse(body);
+	output = profile;
+	console.log('from >> ', fromMovesDate(profile.profile.firstDate));
 }).fail(function(err) { 
 	console.error('error getting profile');
 });

@@ -8,7 +8,7 @@ var express = require('express');
 var app = express();
 var request = require('request');
 
-var authget = 'https://api.moves-app.com/oauth/v1/authorize?client_id='+argv.cid+'&scope=activity&response_type=code',
+var authget = 'https://api.moves-app.com/oauth/v1/authorize?client_id='+argv.cid+'&scope=activity%20location&response_type=code',
 	port = argv.port || 8001;
 
 console.error('please make sure your app redir settings sets the url to http://localhost:'+port+'/moves');
