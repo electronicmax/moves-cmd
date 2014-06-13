@@ -3,8 +3,13 @@ moves liberator
 
 This simple command-line tool makes it easy to get a copy of your complete location history OUT of [Moves App](http://moves-app.com) and to store it safely in json.  Executes mostly from command line, with one browser OAuth handshake at the beginning to get an access token. 
 
+Requirements
+=====
+1. nodejs (including npm)
+2. moves app
+
 Set up and usage
-==
+=====
 
 1. Clone this respository
 2. Install node.js on your platform
