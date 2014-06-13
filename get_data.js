@@ -10,7 +10,7 @@ var _ = require('underscore'),
 	fs = require('fs'),
 	request = require('request'),
 	u = require('./utils');
-	
+
 var argv = require('optimist')
     .usage('Usage: $0  -tokens [tokenfile]')
     .demand(['tokens'])
@@ -70,10 +70,31 @@ MovesAPI.prototype = {
 		return this.get('/user/profile');
 	},
 	getStoryline: function(from) { 
-		var today = new Date();
-		var ndays = (today.valueOf() - from.valueOf())/TWENTY_FOUR_HOURS_USEC;
-
-		this.get('/user/storyline/daily', { from : 
+		var today = new Date(), this_ = this;
+		var ndays = (today.valueOf() - from.valueOf())/FIVE_DAYS_USEC;
+		console.error('ndays ', Math.ceil(ndays));
+		var D = u.deferred();
+		var ds = u.range(ndays).map(function(day_i) {
+			var dst = from.valueOf() + day_i * FIVE_DAYS_USEC;
+			var dend = Math.min(today.valueOf(), from.valueOf() + (day_i+1) * FIVE_DAYS_USEC);
+			var d = u.deferred();
+			console.error( ' from ', new Date(dst), toMovesDate(new Date(dst)), ' until ', new Date(dend), toMovesDate(new Date(dend)));
+			this_.get('/user/storyline/daily', {
+				from: toMovesDate(new Date(dst)),
+				to: toMovesDate(new Date(dend)),
+				trackPoints:true
+			}).then(function(body) { 
+				var result = JSON.parse(body);
+				console.error('got entries ', result.length);
+				d.resolve(result);
+			}).fail(d.reject);
+			return d.promise();
+		});
+		u.when(ds).then(function(results) {
+			console.error('CONT -- ', results.length);
+			D.resolve(results.reduce(function(a,b) { return a.concat(b); }, []));
+		}).fail(D.reject);
+		return D.promise();
 	}
 };
 
@@ -82,10 +103,16 @@ var mvapi = new MovesAPI(tokens.access_token, tokens.refresh_token);
 var output;
 
 mvapi.getProfile().then(function(body) { 
-	console.log('got profile ', body);
+	console.error('got profile ', body);
 	var profile = JSON.parse(body);
 	output = profile;
-	console.log('from >> ', fromMovesDate(profile.profile.firstDate));
+	console.error('from >> ', fromMovesDate(profile.profile.firstDate));
+	mvapi.getStoryline(fromMovesDate(profile.profile.firstDate)).then(function(storyline) {
+		output.storyline = storyline;
+		console.log(JSON.stringify(output));
+	}).fail(function(err) {
+		console.error('error getStoryline() ', err);
+	});
 }).fail(function(err) { 
 	console.error('error getting profile');
 });
