@@ -15,7 +15,7 @@ Set up and usage
 7. Run:
  
       ./get_token.js --cid [your clientid] --csecret [your csecret] > tokens.json
-      
+
 This will output a URL. Open a browser to that URL and follow the instructions.
 When this terminates, proceed.
 8. Run:
