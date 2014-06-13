@@ -14,7 +14,7 @@ Set up and usage
 6. Locate the Client ID and Client Secret in the Development tab of your app, and copy these into a local text file
 7. Run:
  
-    ./get_token.js --cid [your clientid] --csecret [your csecret] > tokens.json
+      ./get_token.js --cid [your clientid] --csecret [your csecret] > tokens.json
       
 This will output a URL. Open a browser to that URL and follow the instructions.
 When this terminates, proceed.
