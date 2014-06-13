@@ -11,26 +11,27 @@ var request = require('request');
 var authget = 'https://api.moves-app.com/oauth/v1/authorize?client_id='+argv.cid+'&scope=activity&response_type=code',
 	port = argv.port || 8001;
 
-console.log('please make sure your app redir settings sets the url to http://localhost:'+port+'/moves');
-console.log(authget);
+console.error('please make sure your app redir settings sets the url to http://localhost:'+port+'/moves');
+console.error(authget);
 
 var get_access_token = function(authcode, cid, csecret) { 
 	var url = 'https://api.moves-app.com/oauth/v1/access_token?grant_type=authorization_code&code='+authcode+'&client_id='+cid+'&client_secret='+csecret;
 	request.post(url, function(err, http, body) {
 		if (err) { 
-			console.log('error parsing ', body, err);
+			console.error('error parsing ', body, err);
 			return;
 		}
 		var tokens = JSON.parse(body);
-		console.log('access token: ', tokens.access_token);
-		console.log('refresh token: ', tokens.refresh_token);
-		console.log('expires in ', tokens.expires_in);
+		console.error('access token: ', tokens.access_token);
+		console.error('refresh token: ', tokens.refresh_token);
+		console.error('expires in ', tokens.expires_in);
+		console.log(JSON.stringify(tokens));
 	});
 };
 
 app.get('/moves',  function(req, res){
 	var authcode = req && req.query.code;
-	console.log('got auth code: ', authcode);
+	console.error('got auth code: ', authcode);
 	res.send('got auth code:<p><pre>' + authcode + '</pre>');
 	get_access_token(authcode, argv.cid, argv.csecret);
 });

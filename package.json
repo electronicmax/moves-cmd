@@ -17,6 +17,10 @@
   "dependencies": {
     "express": "",
     "request": "",
-    "optimist":""
+    "optimist":"",
+    "underscore":"",
+    "jQuery":"",
+    "jsdom" : "",
+    "xmlhttprequest":""
   }
 }
