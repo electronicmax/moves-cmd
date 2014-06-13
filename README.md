@@ -32,4 +32,10 @@ TODO
 ------
 1. RDF Output
 2. Refresh token renewal
+3. Better error handling and documentation
 
+Licensing
+------
+(c) - Max Van Kleek <max@hip.cat> for friends at the [W3C](http://w3c.org).
+
+MIT License. Party as you like! But Don't blame me if stuff happens.
