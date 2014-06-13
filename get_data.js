@@ -2,14 +2,15 @@
 /* jshint undef: true, strict:false, trailing:false, unused:false */
 /* global require, exports, console, process, module */
 
-var SEVEN_DAYS_USEC =  5*24*60*60*1000; // + 23*59*59*1000;
-var TWENTY_FOUR_HOURS_USEC = 24*60*60*1000;
+var TWENTY_FOUR_HOURS_USEC = 24*60*60*1000,
+	FIVE_DAYS_USEC =  5*TWENTY_FOUR_HOURS_USEC;
 
 var _ = require('underscore'),
 	jQ = require('jQuery'),
 	fs = require('fs'),
-	request = require('request');
-
+	request = require('request'),
+	u = require('./utils');
+	
 var argv = require('optimist')
     .usage('Usage: $0  -tokens [tokenfile]')
     .demand(['tokens'])
@@ -52,10 +53,10 @@ var MovesAPI = function(access, refresh) {
 MovesAPI.prototype = {
 	API : 'https://api.moves-app.com/api/1.1',
 	// API: 'http://localhost:8000',
-	get : function(url) { 
+	get : function(url, qs) { 
 		console.error('making request ', this.API+url, ' token : ', this.access);
 		var d = new jQ.Deferred();
-		request({ url:this.API+url, method:'GET', qs: { access_token: this.access } },
+		request({ url:this.API+url, method:'GET', qs: _({ access_token: this.access }).extend(qs||{}) },
 			function(err, http, body) {
 				if (err) { 
 					console.error('error at ', url , ' ', err);
@@ -67,6 +68,12 @@ MovesAPI.prototype = {
 	},
 	getProfile : function() { 
 		return this.get('/user/profile');
+	},
+	getStoryline: function(from) { 
+		var today = new Date();
+		var ndays = (today.valueOf() - from.valueOf())/TWENTY_FOUR_HOURS_USEC;
+
+		this.get('/user/storyline/daily', { from : 
 	}
 };
 
