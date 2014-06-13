@@ -26,6 +26,7 @@ var get_access_token = function(authcode, cid, csecret) {
 		console.error('refresh token: ', tokens.refresh_token);
 		console.error('expires in ', tokens.expires_in);
 		console.log(JSON.stringify(tokens));
+		process.exit(0);
 	});
 };
 

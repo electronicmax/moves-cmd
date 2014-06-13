@@ -15,16 +15,16 @@ Set up and usage
 2. Install node.js on your platform
 3. Run ``npm install``
 4. [Create a new app on dev.moves-app.com](https://dev.moves-app.com/apps)
-5. Set the redirect URL of your app to be ``http://localhost:8000/moves`` 
+5. Set the redirect URL of your app to be ``http://localhost:8001/moves`` 
+Note that this port has to be free because your browser will redirect to this URL.
 6. Locate the Client ID and Client Secret in the Development tab of your app, and copy these into a local text file
 7. Run: ``./get_token.js --cid [your clientid] --csecret [your csecret] > tokens.json``
 
 
 This will output a URL. Open a browser to that URL and follow the instructions. When this terminates, proceed.
 
-8. Run:
 
-    ./get_data.js --tokens [path_to_tokens_json] > data.json
+8. Run: ``./get_data.js --tokens [path_to_tokens_json] > data.json``
 
 9. Enjoy!! =)
 
